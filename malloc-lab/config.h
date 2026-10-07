@@ -21,7 +21,9 @@
  * your students to implement realloc, you can delete the last two
  * traces.
  */
-#define DEFAULT_TRACEFILES \
+
+// Main TraceFile List
+#define DEFAULT_TRACEFILES \ 
   "amptjp-bal.rep",\
   "cccp-bal.rep",\
   "cp-decl-bal.rep",\
@@ -55,7 +57,7 @@
 /* 
  * Alignment requirement in bytes (either 4 or 8) 
  */
-#define ALIGNMENT 8  
+#define ALIGNMENT 8 // btyes Alignment use 8
 
 /* 
  * Maximum heap size in bytes 
