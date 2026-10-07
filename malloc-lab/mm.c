@@ -36,7 +36,7 @@ team_t team = {
 /* rounds up to the nearest multiple of ALIGNMENT */
 #define ALIGN(size) (((size) + (ALIGNMENT - 1)) & ~0x7) // 입력받은 size를 가장 가까운 8의 배수로 올림함
 
-#define SIZE_T_SIZE (ALIGN(sizeof(size_t))) // size_t 크기(8바이트)를 8의 배수로 정렬한 메타데이터 크기
+#define SIZE_T_SIZE (ALIGN(sizeof(size_t))) // size_t 크기(8바이트)를 8의 배수로 정렬한 크기
 
 #define WSIZE 4                                                         // Word Size 정의
 #define DSIZE 8                                                         // Double Word Size 정의
@@ -222,19 +222,95 @@ void mm_free(void *bp)
 /*
  * mm_realloc - Implemented simply in terms of mm_malloc and mm_free
  */
-void *mm_realloc(void *ptr, size_t size)
-{
-    void *oldptr = ptr;
-    void *newptr;
-    size_t copySize;
+// void *mm_realloc(void *ptr, size_t size)
+// {
+//     void *oldptr = ptr;
+//     void *newptr;
+//     size_t copySize;
 
-    newptr = mm_malloc(size);
-    if (newptr == NULL)
-        return NULL;
-    copySize = *(size_t *)((char *)oldptr - SIZE_T_SIZE);
-    if (size < copySize)
-        copySize = size;
-    memcpy(newptr, oldptr, copySize);
-    mm_free(oldptr);
-    return newptr;
+//     newptr = mm_malloc(size);// 새로운 영역을 할당한다.(size의 크기만큼)
+//     if (newptr == NULL)// mm_malloc(size)가 정상적으로 실행됐는지를 검증한다.
+//         return NULL;
+//     copySize = GET_SIZE(HDRP(oldptr)) - 2 * WSIZE;// payload 크기 계산.
+
+//     if (size < copySize)
+//         copySize = size;
+
+//     memcpy(newptr, oldptr, copySize);
+//     mm_free(oldptr);
+//     return newptr;
+// }
+
+void *mm_realloc(void *bp, size_t size)
+{
+    size_t prev_alloc = GET_ALLOC(FTRP(PREV_BLKP(bp)));
+    size_t next_alloc = GET_ALLOC(HDRP(NEXT_BLKP(bp)));
+
+    size_t bp_size = GET_SIZE(HDRP(bp)) - 2 * WSIZE;
+    size_t prev_size = GET_SIZE(FTRP(PREV_BLKP(bp))) - 2 * WSIZE;
+    size_t next_size = GET_SIZE(HDRP(NEXT_BLKP(bp))) - 2 * WSIZE;
+
+    size_t req_size = size;
+
+    if (bp_size < req_size) // 크게 요구하는 크기보다 실제 블록 크기가 작아서 추가적으로 할당하는 경우다.
+    {
+        // 추가적으로 할당하는 경우에 prev_alloc과 next_alloc을 확인하여 합칠수있는지 확인한다.
+        // 하지만 여기서 할당이 가능한 경우엔 현재 bp_size + 사용가능한 블록 size >= req_size 여야한다.
+
+        if (!next_alloc && (bp_size + next_size + 2 * WSIZE >= req_size)) // 다음 블록이 할당 가능하고, 합치면 충분해야한다.
+        {
+            // 해야할것
+            // 1. payload size 변경
+            // 2. Header (size, 1)로 변경
+            // 3. Footer (size, 1)로 변경
+
+            bp_size += next_size + 4 * WSIZE; // 다음 블록의 크기를 현재 크기에 더한다.
+            PUT(HDRP(bp), PACK(bp_size, 1));
+            PUT(FTRP(bp), PACK(bp_size, 1));
+
+            return bp;
+        }
+        else if (!prev_alloc && (prev_size + bp_size + 2 * WSIZE >= req_size))
+        {
+            // 이전 + 현재 블록 병합
+            void *new_bp = PREV_BLKP(bp);
+            size_t merged_size = prev_size + bp_size + 4 * WSIZE;
+
+            // 기존 데이터 보존 후 헤더·푸터 갱신
+            memmove(new_bp, bp, bp_size);
+            PUT(HDRP(new_bp), PACK(merged_size, 1));
+            PUT(FTRP(new_bp), PACK(merged_size, 1));
+
+            return new_bp;
+        }
+        else if (!prev_alloc && !next_alloc && (prev_size + bp_size + next_size + 4 * WSIZE >= req_size))
+        {
+            // 이전 + 현재 + 다음 블록 병합
+            void *new_bp = PREV_BLKP(bp);
+            size_t merged_size = prev_size + bp_size + next_size + 6 * WSIZE;
+
+            memmove(new_bp, bp, bp_size);
+            PUT(HDRP(new_bp), PACK(merged_size, 1));
+            PUT(FTRP(new_bp), PACK(merged_size, 1));
+
+            return new_bp;
+        }
+        else
+        {
+            // 병합으로 확보할 수 없으면 새 공간에 복사
+            void *new_bp = mm_malloc(size);
+            if (new_bp == NULL)
+                return NULL;
+
+            // 바깥 조건이 bp_size < req_size이므로 기존 공간 크기만큼 복사
+            memcpy(new_bp, bp, bp_size);
+            mm_free(bp);
+
+            return new_bp;
+        }
+    }
+    else
+    {
+        return bp;
+    }
 }
