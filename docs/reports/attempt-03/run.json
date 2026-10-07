@@ -1,0 +1,149 @@
+{
+  "attempt": 3,
+  "date": "2026-10-07T15:29:26.055752+09:00",
+  "container": "aadecfcd865b",
+  "environment": "Linux aarch64; GCC 15.2.0; -Wall -O2 -g",
+  "source_sha256": {
+    "mm.c": "aa1ea2cc093e90c50eb5fb92cb325de38ec94475eedb92902f89ccefab3bf350",
+    "mm.h": "b7d2e0c7525a2be2177bd4111e42c18f583ab2e0b2a484260dad9297e688675c",
+    "memlib.c": "178084c183f628b5f8bf6405ba17beb60c7efa327d7997a93e855213a3115a16",
+    "config.h": "8d8cba68f2d198dc055376a86a14bfe006a32242639aa31b5695a16fbf0d3237",
+    "mdriver.c": "4d0bc7c60df55b1f5726941a61064933990703ffd07d6023afad5e24c51e6fa4",
+    "Makefile": "a3eec107505abe43ee956396386134682076879c064e99bd62d92298134456de"
+  },
+  "commands": [
+    {
+      "command": "make -B",
+      "exit_code": 0,
+      "log": "build.log"
+    },
+    {
+      "command": "./mdriver -V -g",
+      "exit_code": 0,
+      "log": "default-traces.log"
+    },
+    {
+      "command": "./mdriver -V -f short1-bal.rep",
+      "exit_code": 0,
+      "log": "short1.log"
+    },
+    {
+      "command": "./mdriver -V -f short2-bal.rep",
+      "exit_code": 0,
+      "log": "short2.log"
+    }
+  ],
+  "passed": 11,
+  "failed": 0,
+  "unmeasured": 0,
+  "total_util_percent": 74,
+  "total_kops": 449,
+  "perf_index": 74,
+  "util_score": 44,
+  "throughput_score": 30,
+  "traces": [
+    {
+      "id": 0,
+      "name": "amptjp",
+      "valid": true,
+      "util": 99,
+      "ops": 5694,
+      "secs": 0.002988,
+      "kops": 1906
+    },
+    {
+      "id": 1,
+      "name": "cccp",
+      "valid": true,
+      "util": 99,
+      "ops": 5848,
+      "secs": 0.002842,
+      "kops": 2058
+    },
+    {
+      "id": 2,
+      "name": "cp-decl",
+      "valid": true,
+      "util": 99,
+      "ops": 6648,
+      "secs": 0.004309,
+      "kops": 1543
+    },
+    {
+      "id": 3,
+      "name": "expr",
+      "valid": true,
+      "util": 100,
+      "ops": 5380,
+      "secs": 0.003188,
+      "kops": 1688
+    },
+    {
+      "id": 4,
+      "name": "coalescing",
+      "valid": true,
+      "util": 66,
+      "ops": 14400,
+      "secs": 4.4e-05,
+      "kops": 328018
+    },
+    {
+      "id": 5,
+      "name": "random",
+      "valid": true,
+      "util": 92,
+      "ops": 4800,
+      "secs": 0.002741,
+      "kops": 1751
+    },
+    {
+      "id": 6,
+      "name": "random2",
+      "valid": true,
+      "util": 92,
+      "ops": 4800,
+      "secs": 0.002507,
+      "kops": 1915
+    },
+    {
+      "id": 7,
+      "name": "binary",
+      "valid": true,
+      "util": 55,
+      "ops": 12000,
+      "secs": 0.071901,
+      "kops": 167
+    },
+    {
+      "id": 8,
+      "name": "binary2",
+      "valid": true,
+      "util": 51,
+      "ops": 24000,
+      "secs": 0.128827,
+      "kops": 186
+    },
+    {
+      "id": 9,
+      "name": "realloc",
+      "valid": true,
+      "util": 27,
+      "ops": 14401,
+      "secs": 0.029885,
+      "kops": 482
+    },
+    {
+      "id": 10,
+      "name": "realloc2",
+      "valid": true,
+      "util": 34,
+      "ops": 14401,
+      "secs": 0.001027,
+      "kops": 14026
+    }
+  ],
+  "short_tests": {
+    "short1": "pass",
+    "short2": "pass"
+  }
+}

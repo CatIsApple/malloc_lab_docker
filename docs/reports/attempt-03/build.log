@@ -1,0 +1,50 @@
+gcc -Wall -O2 -g   -c -o mdriver.o mdriver.c
+In file included from mdriver.c:24:
+config.h:26:28: warning: backslash and newline separated by space
+   26 | #define DEFAULT_TRACEFILES \
+mdriver.c: In function ‘add_range’:
+mdriver.c:36:26: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+   36 | #define IS_ALIGNED(p) ((((unsigned int)(p)) % ALIGNMENT) == 0)
+      |                          ^
+mdriver.c:422:14: note: in expansion of macro ‘IS_ALIGNED’
+  422 |         if (!IS_ALIGNED(lo))
+      |              ^~~~~~~~~~
+mdriver.c: In function ‘remove_range’:
+mdriver.c:473:13: warning: variable ‘size’ set but not used [-Wunused-but-set-variable]
+  473 |         int size;
+      |             ^~~~
+mdriver.c: In function ‘read_trace’:
+mdriver.c:536:9: warning: ignoring return value of ‘fscanf’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  536 |         fscanf(tracefile, "%d", &(trace->sugg_heapsize)); /* not used */
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+mdriver.c:537:9: warning: ignoring return value of ‘fscanf’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  537 |         fscanf(tracefile, "%d", &(trace->num_ids));
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+mdriver.c:538:9: warning: ignoring return value of ‘fscanf’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  538 |         fscanf(tracefile, "%d", &(trace->num_ops));
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+mdriver.c:539:9: warning: ignoring return value of ‘fscanf’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  539 |         fscanf(tracefile, "%d", &(trace->weight)); /* not used */
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+mdriver.c:564:25: warning: ignoring return value of ‘fscanf’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  564 |                         fscanf(tracefile, "%u %u", &index, &size);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+mdriver.c:571:25: warning: ignoring return value of ‘fscanf’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  571 |                         fscanf(tracefile, "%u %u", &index, &size);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+mdriver.c:578:25: warning: ignoring return value of ‘fscanf’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  578 |                         fscanf(tracefile, "%ud", &index);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+gcc -Wall -O2 -g   -c -o mm.o mm.c
+gcc -Wall -O2 -g   -c -o memlib.o memlib.c
+In file included from memlib.c:15:
+config.h:26:28: warning: backslash and newline separated by space
+   26 | #define DEFAULT_TRACEFILES \
+gcc -Wall -O2 -g   -c -o fsecs.o fsecs.c
+In file included from fsecs.c:9:
+config.h:26:28: warning: backslash and newline separated by space
+   26 | #define DEFAULT_TRACEFILES \
+gcc -Wall -O2 -g   -c -o fcyc.o fcyc.c
+gcc -Wall -O2 -g   -c -o clock.o clock.c
+gcc -Wall -O2 -g   -c -o ftimer.o ftimer.c
+gcc -Wall -O2 -g -o mdriver mdriver.o mm.o memlib.o fsecs.o fcyc.o clock.o ftimer.o
