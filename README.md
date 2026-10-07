@@ -1,9 +1,5 @@
 # 📘 Docker + VSCode DevContainer 기반 C 개발 환경 구축 가이드 (MallocLab)
 
-이 문서는 **Windows**와 **macOS** 사용자가 Docker와 VSCode DevContainer 기능을 활용하여 C 개발 및 디버깅 환경을 빠르게 구축할 수 있도록 도와줍니다.
-
-[**주의**] 기존 차수와 다른 점만 확인하시면 4장부터 6장만 확인하시면 됩니다.
-
 ---
 
 ## 1. Docker란 무엇인가요?

@@ -1,9 +1,9 @@
 #include <stdio.h>
 
-extern int mm_init (void);
-extern void *mm_malloc (size_t size);
-extern void mm_free (void *ptr);
-extern void *mm_realloc(void *ptr, size_t size);
+extern int mm_init (void); // 외부 참조 가능
+extern void *mm_malloc (size_t size); // 외부 참조 가능
+extern void mm_free (void *ptr); // 외부 참조 가능
+extern void *mm_realloc(void *ptr, size_t size); // 외부 참조 가능
 
 
 /* 
@@ -17,7 +17,7 @@ typedef struct {
     char *id1;      /* login ID of first member */
     char *name2;    /* full name of second member (if any) */
     char *id2;      /* login ID of second member */
-} team_t;
+} team_t; // team_t Type. all Pointer
 
-extern team_t team;
+extern team_t team; // 외부 참조 가능
 
